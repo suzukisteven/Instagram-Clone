@@ -1,9 +1,28 @@
 {% extends "_layout.html" %}
 {% block title %}
-  Homepage
+  Home
 {% endblock %}
 {% block header %}
 {% endblock %}
+
 {% block content %}
-<h1>Homepage</h1>
+  <h1>Home - Flaskagram</h1>
 {% endblock %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success show w-75 d-flex mx-auto">
+        {{ messages }}
+    </div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% if errors %}
+{% for error in errors %}
+    <div class="alert alert-danger show w-75 d-flex mx-auto">
+        {{ error }}
+    </div>
+{% endfor %}
+{% endif %}

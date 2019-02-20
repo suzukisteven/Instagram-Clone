@@ -1,1 +1,42 @@
-<h1>Users#new</h1>
+{% extends "_layout.html" %}
+{% block title %}
+    Sign Up
+{% endblock%}
+{% block content %}
+<h1>Create a New Account</h1>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success show w-75 d-flex mx-auto">
+        {{ messages }}
+    </div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% if errors %}
+{% for error in errors %}
+    <div class="alert alert-danger show w-75 d-flex mx-auto">
+        {{ error }}
+    </div>
+{% endfor %}
+{% endif %}
+
+<form action="{{ url_for('users.create') }}" method="POST">
+    <div class="form-group">
+        <label for="users.create">First Name:</label>
+        <input type="text" class="form-control mb-3 p-0" name="first_name">
+        <label for="users.create">Last Name:</label>
+        <input type="text" class="form-control mb-3 p-0" name="last_name">
+        <label for="users.create">Username:</label>
+        <input type="text" class="form-control mb-3 p-0" name="user_name">
+        <label for="users.create">Email:</label>
+        <input type="email" class="form-control mb-3 p-0" name="email">
+        <label for="users.create">Password:</label>
+        <input type="password" class="form-control" name="password">
+    </div>
+        <button type="submit" class="btn btn-outline-primary">Sign Up</button>
+</form>
+
+{% endblock %}
