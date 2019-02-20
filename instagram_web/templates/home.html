@@ -6,23 +6,19 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Home - Flaskagram</h1>
+
+    <h1>Home - Flaskagram</h1>
+  
+  {% if errors %}
+  {% for error in errors %}
+      <div class="alert alert-danger show w-75 d-flex mx-auto">
+          {{ error }}
+      </div>
+  {% endfor %}
+  {% endif %}
+
+{% if current_user.is_authenticated %}
+  <h3>Welcome, {{current_user.first_name}} {{current_user.last_name}}</h3>
+{% endif %}
+
 {% endblock %}
-
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-success show w-75 d-flex mx-auto">
-        {{ messages }}
-    </div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-
-{% if errors %}
-{% for error in errors %}
-    <div class="alert alert-danger show w-75 d-flex mx-auto">
-        {{ error }}
-    </div>
-{% endfor %}
-{% endif %}
