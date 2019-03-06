@@ -5,16 +5,6 @@
 {% block content %}
 <h1>Login</h1>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-    <div class="alert alert-{{ category }} show w-75 d-flex mx-auto">
-        {{ message }}
-    </div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-
 {% if errors %}
 {% for error in errors %}
     <div class="alert alert-danger show w-75 d-flex mx-auto">

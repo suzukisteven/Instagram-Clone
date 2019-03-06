@@ -12,17 +12,18 @@ class User(UserMixin, BaseModel):
     email = pw.CharField(unique=True, null=False)
     password = pw.CharField(unique=False, null=False)
 
-    def set_password(self, password):
-        self.hashed_password = generate_password_hash(password)
-    
-    def check_password(self, password):
-        if check_password_hash(self.hashed_password, password):
-            return True
-        else:
-            return False
+    def validate(self):
+        if len(self.user_name) < 4:
+            self.errors.append('Username must be longer than 4 characters!')
+        if len(self.password) < 6:
+            self.errors.append('Password must be longer than 6 characters!')
+        if self.password == " ":
+            self.errors.append('You must enter a password!')
+        hashed_password = generate_password_hash(self.password)
+        self.password = hashed_password
 
     @login.user_loader
-    def load_user(self, id):
+    def load_user(id):
         try:
             return User.get_by_id(id)
         except:

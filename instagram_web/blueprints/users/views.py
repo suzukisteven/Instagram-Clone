@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_user, logout_user
+# from helpers import *
 
 
 users_blueprint = Blueprint('users',
@@ -21,16 +22,15 @@ def create():
     user_name = request.form['user_name']
     email = request.form['email']
     user_password = request.form['password']
-    hashed_password = generate_password_hash(user_password)
 
-    user = User(first_name=first_name, last_name=last_name, user_name=user_name, email=email, password=hashed_password)
+    user = User(first_name=first_name, last_name=last_name, user_name=user_name, email=email, password=user_password)
 
     if user.save():
-        flash("Saved {request.form['user_name']} to DB.")
-        return redirect(url_for('home'))
+        flash(f"Successfully created account for: {request.form['user_name']}. Please Login to continue.", "success")
+        return redirect(url_for('users.login'))
     else:
-        flash("Failed to create a new user. Please try again with different credentials.")
-        return render_template('home.html')
+        flash("Failed to create a new user.", "danger")
+        return render_template('new.html', errors=user.errors)
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -45,15 +45,15 @@ def login():
         user = User.get(User.user_name == request.form['user_name'])
 
         if not user:
-            flash(f"Invalid username or password. Please try again.")
+            flash(f"Invalid username or password.")
             return redirect(url_for('users.login'))
         else:
             if check_password_hash(user.password, request.form['password']):
                 login_user(user)
-                flash("Successfully Logged in.", "success")
+                flash(f"Successfully Logged in.", "success")
                 return redirect(url_for('home'))
             else:
-                flash(f"Invalid username or password. Please try again.", "danger")
+                flash(f"Invalid username or password.", "danger")
                 return redirect(url_for('users.login'))
 
 
@@ -76,9 +76,43 @@ def index():
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
-    pass
+    user = User.get_by_id(id)
+    return render_template('edit.html', user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    pass
+    user = User.get_by_id(id)
+    user.user_name = request.form['user_name']
+    user.email = request.form['email']
+    user.password = request.form['password']
+
+    if current_user == user:
+        if user.save():
+            flash("Your Profile has been updated.", "success")
+            return render_template('home.html')
+        else:
+            flash("Your changes were not saved. Please try again.", "danger")
+            return redirect(url_for('users.edit', id=user.id, errors=user.errors))
+    else:
+        flash("You are not authorized to do that.", "danger")
+        return render_template('home.html')
+
+def upload_file():
+    if "fileupload" not in request.files:
+        return "No user_file key in request.files!"
+    
+    file = request.files["fileupload"]
+
+    if file.filename == "":
+        return "Please select a file."
+    
+    # if file and allowed_file(file.filename):
+    #     file.filename = secure_filename(file.filename)
+    #     output = upload_file_to_s3(file, app.config["S3_BUCKET"])
+    #     return str(output)
+    
+    else:
+        return redirect("/")
+    
+
