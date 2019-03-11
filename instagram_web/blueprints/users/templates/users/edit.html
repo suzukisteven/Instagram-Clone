@@ -15,7 +15,7 @@
 
 <h1>Edit Account</h1>
 
-<form action="{{ url_for('users.update', id=user.id) }}" method="POST">
+<form action="{{ url_for('users.update', id=user.id) }}" method="POST" enctype="multipart/form-data">
     <div class="form-group">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label for="users.update">Username:</label>
@@ -24,20 +24,12 @@
         <input type="email" class="form-control mb-3 p-0" name="email" value="{{ user.email }}">
         <label for="users.update">Password:</label>
         <input type="password" class="form-control" name="password">
+        <label for="users.update">Upload Profile Image:</label>
+        <input type="file" name="user_file">
     </div>
         <button type="submit" class="btn btn-outline-warning">Update</button>
 </form>
 
 <hr class="my-4">
 
-<h4>Upload Profile Image</h4>
-
-<form action="#" method="POST">
-    <div class="form-group">
-        <input type="file" name="fileupload" value="fileupload" id="fileupload">
-        <input class="btn btn-outline-primary mt-3" type="submit" value="Submit">
-    </div>
-</form>
-
-<hr class="my-4">
 {% endblock %}

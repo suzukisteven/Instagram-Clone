@@ -5,10 +5,10 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(32)
-    S3_BUCKET = os.environ.get("S3_BUCKET_NAME")
-    S3_KEY = os.environ.get("S3_ACCESS_KEY")
-    S3_SECRET = os.environ.get("S3_SECRET_ACCESS_KEY")
-    S3_LOCATION = os.environ.get('http://{}.s3.amazonaws.com/'.format(S3_BUCKET))
+    S3_BUCKET = os.environ.get("S3_BUCKET")
+    S3_KEY = os.environ.get("S3_KEY")
+    S3_SECRET = os.environ.get("S3_SECRET")
+    S3_LOCATION = f"http://{S3_BUCKET}.s3.amazonaws.com/"
     DEBUG = True
     PORT = 5000
 
@@ -29,13 +29,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     ASSETS_DEBUG = True
 
+
 class TestingConfig(Config):
     TESTING = True
     DEBUG = True
     ASSETS_DEBUG = True
-
-class AWSBucket(Config):
-    
-    SECRET_KEY = os.urandom(32)
-    DEBUG = True
-    PORT = 5000

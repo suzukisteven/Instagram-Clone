@@ -1,0 +1,23 @@
+{% extends "_layout.html" %}
+{% block title %}
+  {{user_name}}
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+    {% if errors %}
+    {% for error in errors %}
+        <div class="alert alert-danger show w-75 d-flex mx-auto">
+            {{ error }}
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+    <h5>{{current_user.first_name}} {{current_user.last_name}}</h5>
+    <img src="{{current_user.profile_image_url" alt="User Profile Image">
+    {% endif %}
+
+{% endblock %}

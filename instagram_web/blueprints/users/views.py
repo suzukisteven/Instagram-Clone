@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import current_user, login_user, logout_user
-# from helpers import *
+from instagram_web.util.helpers import upload_file_to_s3, allowed_file, app
+import datetime
 
 
 users_blueprint = Blueprint('users',
@@ -13,7 +15,6 @@ users_blueprint = Blueprint('users',
 @users_blueprint.route('/new', methods=['GET'])
 def new():
     return render_template('new.html')
-
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
@@ -66,7 +67,7 @@ def logout():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    pass
+    return render_template('userprofile.html', user_name=user_name)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -90,7 +91,6 @@ def update(id):
     if current_user == user:
         if user.save():
             flash("Your Profile has been updated.", "success")
-            return render_template('home.html')
         else:
             flash("Your changes were not saved. Please try again.", "danger")
             return redirect(url_for('users.edit', id=user.id, errors=user.errors))
@@ -98,21 +98,23 @@ def update(id):
         flash("You are not authorized to do that.", "danger")
         return render_template('home.html')
 
-def upload_file():
-    if "fileupload" not in request.files:
-        return "No user_file key in request.files!"
+    if "user_file" not in request.files:
+        flash("No file found!")
     
-    file = request.files["fileupload"]
+    file = request.files["user_file"]
 
     if file.filename == "":
         return "Please select a file."
     
-    # if file and allowed_file(file.filename):
-    #     file.filename = secure_filename(file.filename)
-    #     output = upload_file_to_s3(file, app.config["S3_BUCKET"])
-    #     return str(output)
+    if file and allowed_file(file.filename):
+        file.filename = secure_filename(str(user.id) + file.filename + str(datetime.datetime.now()))
+        output = upload_file_to_s3(file, app.config["S3_BUCKET"])
+        user.profile_image_path = output
+        user.save()
+        return render_template('home.html')
     
     else:
         return redirect("/")
+
     
 

@@ -1,11 +1,14 @@
 import boto3, botocore
-from config import S3_KEY, S3_SECRET, S3_BUCKET
+from flask import Flask, request, flash, url_for, render_template, redirect
+from app import app
 
 s3 = boto3.client(
    "s3",
-   aws_access_key_id=S3_KEY,
-   aws_secret_access_key=S3_SECRET
+   aws_access_key_id=app.config['S3_KEY'],
+   aws_secret_access_key=app.config['S3_SECRET']
 )
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 def upload_file_to_s3(file, bucket_name, acl="public-read"):
     try:
@@ -23,5 +26,8 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
         print("Something happened", e)
         return e
     
-    return "{}{}".format(app.config["S3_LOCATION"], file.filename)
-    
+    return f"{file.filename}"
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

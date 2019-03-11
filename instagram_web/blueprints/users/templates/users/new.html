@@ -14,7 +14,6 @@
 
 <h1>Create a New Account</h1>
 
-
 <form action="{{ url_for('users.create') }}" method="POST">
     <div class="form-group">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
