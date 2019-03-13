@@ -13,15 +13,15 @@
 {% endfor %}
 {% endif %}
 
-<form action="{{ url_for('users.login') }}" method="POST">
+<form action="{{ url_for('sessions.create', next=request.args.get('next')) }}" method="POST">
     <div class="form-group">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <label for="users.login">Username:</label>
+        <label for="user_name">Username:</label>
         <input type="text" class="form-control mb-3 p-0" name="user_name">
-        <label for="users.login">Password:</label>
+        <label for="password">Password:</label>
         <input type="password" class="form-control" name="password">
     </div>
-        <button type="submit" class="btn btn-outline-primary">Sign In</button>
+    <button type="submit" class="btn btn-outline-primary">Sign In</button>
 </form>
 
 {% endblock %}
