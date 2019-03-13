@@ -12,17 +12,21 @@ images_blueprint = Blueprint('images',
 @images_blueprint.route('/<id>', methods=["POST"])
 def upload_photo(id):
     if "user_file" not in request.files:
-        flash("No file found! Please try again.")
+        flash("You didn't upload a file! Please try again.", "danger")
 
-    file = request.files["user_file"]
+    file = request.files.get('user_file')
 
-    if file.filename == "":
-        return "Please select a file."
+    if file:
+        if file.filename == "":
+            return "Please select a file."
 
-    if file and allowed_file(file.filename):
-        file.filename = secure_filename(str(id) + file.filename + str(datetime.datetime.now()))
-        output = upload_file_to_s3(file, app.config["S3_BUCKET"])
-        Image.create(image_path=output, user_id=id)
-        return redirect(url_for('users.show', id=id))
+        if file and allowed_file(file.filename):
+            file.filename = secure_filename(str(id) + file.filename + str(datetime.datetime.now()))
+            output = upload_file_to_s3(file, app.config["S3_BUCKET"])
+            Image.create(image_path=output, user_id=id)
+            flash("Post created", "success")
+            return redirect(url_for('users.show', id=id))
+        else:
+            return redirect("/")
     else:
         return redirect("/")

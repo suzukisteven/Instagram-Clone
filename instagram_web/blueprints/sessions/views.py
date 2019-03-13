@@ -21,9 +21,9 @@ def create():
     else:
         if check_password_hash(user.password, request.form['password']):
             login_user(user)
-            flash(f"Successfully Logged in.", "success")
+            flash(f"Welcome back, { current_user.first_name }!", "success")
             next = request.args.get('next')
-            return redirect(next or url_for('home'))
+            return redirect(next or url_for('users.show', id=user.id))
         else:
             flash(f"Invalid username or password.", "danger")
             return redirect(url_for('sessions.new'))

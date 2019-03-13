@@ -88,7 +88,7 @@ def update(id):
 def update_profile_privacy(id):
     user = User.get_by_id(id)
     if current_user == user:
-        user.update(profile_privacy=not user.profile_privacy).execute()
+        user.update(profile_privacy = not user.profile_privacy).execute()
         flash("Your profile privacy settings have been updated.", "info")
         return redirect(url_for('users.edit', id=user.id))
     else:

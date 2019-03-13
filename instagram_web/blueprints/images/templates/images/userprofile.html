@@ -1,35 +1,71 @@
 {% extends "_layout.html" %}
+
 {% block title %}
-  @{{current_user.user_name}}
+  {{ current_user.user_name }}
 {% endblock %}
+
 {% block header %}
 {% endblock %}
 
 {% block content %}
 
-    {% if errors %}
-    {% for error in errors %}
-        <div class="alert alert-danger show w-75 d-flex mx-auto">
-            {{ error }}
-        </div>
-    {% endfor %}
-    {% endif %}
-
-    {% if current_user.is_authenticated %}
-    <h2 class="mt-3">@{{ current_user.user_name }}</h2>
-    <img src="{{current_user.profile_image_url}}" alt="User Profile Image">
-    {% endif %}
-
-    <form action="{{ url_for('images.upload_photo', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
-      <div class="form-group">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-          <label for="users.update">Upload Image:</label>
-          <input type="file" name="user_file">
+  {% if errors %}
+  {% for error in errors %}
+      <div class="alert alert-danger show w-75 d-flex mx-auto">
+          {{ error }}
       </div>
-          <button type="submit" class="btn btn-outline-warning">Upload</button>
-  </form>
-{% for image in user.images %}
-  <img src={{image.image_url}} alt="">
-{% endfor %}
+  {% endfor %}
+  {% endif %}
+
+  {% if current_user.is_authenticated %}
+  <div class="row mt-3">
+    <div class="col-md-3 d-flex">
+      <img class="border rounded-circle my-auto mx-auto" width="150px;" src="{{current_user.profile_image_url}}" alt="User Profile Image">
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        <!-- If current_user, dont display the damn button-->
+        <!-- If you have already followed this person, don't display-->
+        <!-- Else, display it -->
+        <h3 class="mt-5 ml-3">{{ current_user.user_name }}<span><button class="ml-4 btn btn-primary btn-sm">Follow</button></span></h3>
+      </div>
+      <div class="row">
+        <p class="mt-3 ml-3 mr-5" style="font-size: 16px;">Posts: <strong>{{ current_user.images|length }}</strong></p>
+        <p class="mt-3 ml-3 mr-5" style="font-size: 16px;">Followers: <strong>6.3m</strong></p>
+        <p class="mt-3 ml-3" style="font-size: 16px;">Following: <strong>163,428</strong></p>
+        <p class="mt-3 ml-3 w-75" style="font-size: 16px;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+          Sit architecto nihil repellat quod reprehenderit rem libero id sequi ratione explicabo! Quae corporis itaque 
+          natus delectus magnam, nemo minima, magni ipsam nam asperiores laboriosam, reiciendis deleniti.</p>
+        <div class="col-md-12">
+          <form action="{{ url_for('images.upload_photo', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group mt-3 d-inline-block">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <h5 class="text-primary" for="users.update">Upload an Image</h5>
+                </br>
+                <input type="file" name="user_file">
+            </div>
+                <button type="submit" class="btn btn-outline-primary">Create Post</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="row">
+      {% if not user.images %}
+      <div class="container text-center mt-5 pt-5" style="height: 15em;">
+        <h3>You don't seem to have made any posts yet.</h3>
+      </div>
+      {% else %}
+        {% for image in user.images %}
+          <div class="col-md-4 mt-3 card d-flex justify-content-start mb-4" style="height: 350px;">
+            <img class="my-auto mx-auto" src={{image.image_url}} style="width: 90%;">
+            <!-- width="300px" -->
+            <button class="btn btn-success btn-sm" style="position: absolute; bottom: 2.5%; right: 2.5%">Donate</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+  </div>
 
 {% endblock %}
