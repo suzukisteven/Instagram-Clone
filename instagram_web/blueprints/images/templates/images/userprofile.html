@@ -1,6 +1,6 @@
 {% extends "_layout.html" %}
 {% block title %}
-  {{current_user.user_name}}
+  @{{current_user.user_name}}
 {% endblock %}
 {% block header %}
 {% endblock %}
@@ -28,5 +28,8 @@
       </div>
           <button type="submit" class="btn btn-outline-warning">Upload</button>
   </form>
+{% for image in user.images %}
+  <img src={{image.image_url}} alt="">
+{% endfor %}
 
 {% endblock %}

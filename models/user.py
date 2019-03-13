@@ -14,6 +14,7 @@ class User(UserMixin, BaseModel):
     email = pw.CharField(unique=True, null=False)
     password = pw.CharField(unique=False, null=False)
     profile_image_path = pw.CharField(unique=False, null=True)
+    profile_privacy = pw.BooleanField(default=False)
 
     def validate(self):
         if len(self.user_name) < 4:
@@ -22,7 +23,6 @@ class User(UserMixin, BaseModel):
             self.errors.append('Password must be longer than 6 characters!')
         if not self.password:
             self.errors.append('You must enter a password!')
-        breakpoint()
         if not re.match(r"^[p][b][k][d][f][2][:][s][h][a][2][5][6][:].{79}\b", self.password):
             # nest password validation here
             hashed_password = generate_password_hash(self.password)

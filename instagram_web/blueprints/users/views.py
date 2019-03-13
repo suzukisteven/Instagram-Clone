@@ -45,6 +45,7 @@ def show(id):
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
+@login_required
 def edit(id):
     user = User.get_by_id(id)
     return render_template('edit.html', user=user)
@@ -53,14 +54,29 @@ def edit(id):
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
     user = User.get_by_id(id)
-    user.user_name = request.form['user_name']
-    user.email = request.form['email']
-    if request.form.get('password'):
-        user.password = request.form.get('password')
-    print('User updated')
     if current_user == user:
+        user.user_name = request.form['user_name']
+        user.email = request.form['email']
+        if request.form.get('password'):
+            user.password = request.form.get('password')
+
+        if request.files.get('user_file'):
+            if "user_file" not in request.files:
+                flash("No file found! Please try again.")
+            
+            file = request.files["user_file"]
+
+            if file.filename == "":
+                return "Please select a file."
+            
+            if file and allowed_file(file.filename):
+                file.filename = secure_filename(str(user.id) + file.filename + str(datetime.datetime.now()))
+                output = upload_file_to_s3(file, app.config["S3_BUCKET"])
+                user.profile_image_path = output
+        
         if user.save():
             flash("Your Profile has been updated.", "success")
+            return redirect(url_for('users.show', id=user.id))
         else:
             flash("Your changes were not saved. Please try again.", "danger")
             return redirect(url_for('users.edit', id=user.id, errors=user.errors))
@@ -68,23 +84,13 @@ def update(id):
         flash("You are not authorized to do that.", "danger")
         return render_template('home.html')
 
-    if "user_file" not in request.files:
-        flash("No file found! Please try again.")
-    
-    file = request.files["user_file"]
-
-    if file.filename == "":
-        return "Please select a file."
-    
-    if file and allowed_file(file.filename):
-        file.filename = secure_filename(str(user.id) + file.filename + str(datetime.datetime.now()))
-        output = upload_file_to_s3(file, app.config["S3_BUCKET"])
-        user.profile_image_path = output
-        user.save()
-        return render_template('home.html')
-    
+@users_blueprint.route('/toggle_privacy/<id>', methods=['POST'])
+def update_profile_privacy(id):
+    user = User.get_by_id(id)
+    if current_user == user:
+        user.update(profile_privacy=not user.profile_privacy).execute()
+        flash("Your profile privacy settings have been updated.", "info")
+        return redirect(url_for('users.edit', id=user.id))
     else:
-        return redirect("/")
- 
-    
+        return redirect(url_for('sessions.create'))
 

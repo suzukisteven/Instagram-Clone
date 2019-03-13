@@ -22,13 +22,9 @@ csrf = CSRFProtect(app)
 def load_user(id):
         return User.get_or_none(id=id)
 
-
 login_manager.login_view = "sessions.new"
 login_manager.login_message = u"You must log in to see this content."
 login_manager.login_message_category = "danger"
-
-
-
 
 @app.errorhandler(500)
 def internal_server_error(e):
