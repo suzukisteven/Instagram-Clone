@@ -54,15 +54,18 @@
   {% endif %}
   <div class="row">
       {% if not user.images %}
-      <div class="container text-center mt-5 pt-5" style="height: 15em;">
+      <div class="container text-center mt-5 pt-5 d-flex" style="height: 15em; align-items: stretch;">
         <h3>You don't seem to have made any posts yet.</h3>
       </div>
       {% else %}
         {% for image in user.images %}
-          <div class="col-md-4 mt-3 card d-flex justify-content-start mb-4" style="height: 350px;">
-            <img class="my-auto mx-auto" src={{image.image_url}} style="width: 90%;">
-            <!-- width="300px" -->
-            <button class="btn btn-success btn-sm" style="position: absolute; bottom: 2.5%; right: 2.5%">Donate</button>
+        <!-- Liren created a new div with the col-md-4 and margins. Use px-3 to handle the gaps on the y-axis -->
+          <div class="px-3 col-md-4 mt-3 mb-3">
+              <div class="card" style="height: 350px;">
+                <img class="my-auto mx-auto" src={{ image.image_url }} width="90%">
+                <!-- width="300px" -->
+                <button class="btn btn-success btn-sm" style="position: absolute; bottom: 2.5%; right: 2.5%">Donate</button>
+              </div>
           </div>
         {% endfor %}
       {% endif %}

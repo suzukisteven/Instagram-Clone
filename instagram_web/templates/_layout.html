@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <script src="https://js.braintreegateway.com/web/dropin/1.16.0/js/dropin.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
     {% assets "home_css" %}
@@ -69,17 +70,19 @@
         {% endif %}
         {% endwith %}
 
-    <div class="container">
+    <div class="container" style="min-height: 82vh;">
       {% block content %}
         <!-- All partial template content rendered here -->
       {% endblock %}
     </div>
 
     <footer class="footer text-dark text-center" style="font-size: 14px;">
-      © 2019 INSTAGRAM
+      <div class="container">
+        © 2019 INSTAGRAM
+      </div>
     </footer>
 
     <script>setTimeout("$('.alert').alert('close')", 2000)</script>
-    
+
   </body>
 </html>

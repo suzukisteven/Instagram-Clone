@@ -20,14 +20,13 @@
         <div class="form-group">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="text" class="form-control mb-3" name="user_name" placeholder="Username" style="font-size: 14px;">
-            <input type="password" class="form-control mb-4" name="password" placeholder="Password" style="font-size: 14px;">
+            <input type="password" class="form-control mb-3" name="password" placeholder="Password" style="font-size: 14px;">
         </div>
-        <button type="submit" class="btn btn-primary btn-sm w-100">Sign In</button>
+        <button type="submit" class="btn btn-primary btn-sm w-100 mb-1">Log In</button>
         <a class="card-text text-center mt-2" href="#"><small class="text-muted">Forgot Password?</small></a>
     </form>
     <hr class="my-2">
-    <button type="submit" class="btn btn-outline-primary btn-sm mt-2 w-100">Login with Google+</button>
-    
+    <button type="submit" class="btn btn-outline-primary disabled btn-sm mt-2 w-100"><span><i class="fab fa-google mr-2"></i></span>Log In with Google</button>
 
 </div>
 

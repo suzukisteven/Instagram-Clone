@@ -1,6 +1,6 @@
 import os
 import config
-from flask import Flask, render_template, url_for, redirect, flash, request
+from flask import Flask
 from models.base_model import db
 
 web_dir = os.path.join(os.path.dirname(
