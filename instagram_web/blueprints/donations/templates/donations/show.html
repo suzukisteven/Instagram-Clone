@@ -2,7 +2,7 @@
 {% block content %}
 
 {% block title %}
-    Receipt
+    Thank You!
 {% endblock%}
 
 <div class="wrapper">
@@ -18,8 +18,8 @@
       </section>
 
       <section>
-        <a class="button primary back" href="/checkouts/new">
-          <span>Test Another Transaction</span>
+        <a class="button primary back" href={{ url_for('donations.new', image_id=image_id) }}>
+          <span>Make Another Donation</span>
         </a>
       </section>
     </div>
@@ -29,7 +29,6 @@
 <aside class="drawer dark">
   <header>
     <div class="content compact">
-      <a href="https://developers.braintreepayments.com" class="braintree" target="_blank">Braintree</a>
       <h3>API Response</h3>
     </div>
   </header>
@@ -145,16 +144,7 @@
         </table>
       </section>
     {% endif %}
-
-    <section>
-      <p class="center small">Integrate with the Braintree SDK for a secure and seamless checkout</p>
-    </section>
-
-    <section>
-      <a class="button secondary full" href="https://developers.braintreepayments.com/guides/drop-in" target="_blank">
-        <span>See the Docs</span>
-      </a>
-    </section>
+    
   </article>
 </aside>
 {% endblock %}

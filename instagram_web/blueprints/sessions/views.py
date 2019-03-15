@@ -28,7 +28,6 @@ def create():
             flash(f"Invalid username or password.", "danger")
             return redirect(url_for('sessions.new'))
 
-
 @sessions_blueprint.route('/logout')
 def logout():
     logout_user()

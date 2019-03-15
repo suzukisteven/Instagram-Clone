@@ -1,4 +1,8 @@
+import os
 import boto3, botocore
+import sendgrid
+from sendgrid.helpers.mail import *
+
 from flask import Flask, request, flash, url_for, render_template, redirect
 from app import app
 
@@ -31,3 +35,16 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+
+def deliver_email():
+    from_email = Email("admin@flaskagram.com")
+    to_email = Email("suzukisteven@gmail.com")
+    subject = "Thank you for your generosity!"
+    content = Content("text/plain", "Your donation was received.")
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)

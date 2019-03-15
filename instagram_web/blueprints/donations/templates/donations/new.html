@@ -5,28 +5,22 @@
 {% endblock %}
 
 {% block header %}
-    <div class="col-md-12 text-center bg-dark text-white" style="height:200px; line-height:150px;">DONATE AND GET A MONTH FREE!!!</div>
+    <!-- <div class="col-md-12 text-center bg-dark text-white" style="height:200px; line-height:150px;">DONATE AND GET A MONTH FREE!!!</div> -->
 {% endblock %}
 
 {% block content%}
-    <h1 class="mt-3">Donate to a Post</h1>
+    <h1 class="mt-3">Make a Donation</h1>
+    <p><em>We are legit - your information is safe with us. Trust me.</em></p>
     <div class="wrapper">
-        <div class="checkout container">
+        <div>
         
-            <header>
-            <h1>Let's test a transaction</h1>
-            <p>
-                Make a test payment with Braintree using PayPal or a card
-            </p>
-            </header>
-        
-            <form id="payment-form" method="post" action={{ url_for('donations.create') }}>
+            <form id="payment-form" method="post" action={{ url_for('donations.create', image_id=image_id) }}>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <section>
                 <label for="amount">
-                <span class="input-label">Amount</span>
+                <span class="input-label">Amount:</span>
                 <div class="input-wrapper amount-wrapper">
-                    <input id="amount" name="amount" type="tel" min="1" placeholder="Amount" value="10">
+                    <input id="amount" class="form-control" name="amount" type="tel" min="1" placeholder="Amount" value="10">
                 </div>
                 </label>
         
@@ -36,7 +30,7 @@
             </section>
         
             <input type="hidden" id="nonce" name="payment_method_nonce" />
-            <button class="button" type="submit" id="submit-button"><span>Test Transaction</span></button>
+            <button class="button btn btn-success" type="submit" id="submit-button"><span>Donate</span></button>
             </form>
         
         </div>
@@ -51,16 +45,16 @@
             container: '#bt-dropin',
         }, function (createErr, instance) {
             form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            instance.requestPaymentMethod(function (err, payload) {
-                if (err) {
-                console.log('Error', err);
-                return;
-                }
-                // Add the nonce to the form and submit
-                document.querySelector('#nonce').value = payload.nonce;
-                form.submit();
-            });
+                event.preventDefault();
+                instance.requestPaymentMethod(function (err, payload) {
+                    if (err) {
+                    console.log('Error', err);
+                    return;
+                    }
+                    // Add the nonce to the form and submit
+                    document.querySelector('#nonce').value = payload.nonce;
+                    form.submit();
+                });
             });
         });
     </script>

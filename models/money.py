@@ -4,7 +4,7 @@ from app import app
 import peewee as pw
 
 class Money(BaseModel):
-    amount = pw.DecimalField()
+    amount = pw.DecimalField(decimal_places=2)
     # Foreign key reference to which user the images belong to.
     # One-to-Many relationship: User can have multiple donations, but they belong to a single user.
     # The backref allows for you to query image.donations, user.donations etc

@@ -1,3 +1,6 @@
+import os
+import braintree
+
 from app import app
 from flask import render_template
 
@@ -6,11 +9,8 @@ from .util.assets import bundles
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 
-import braintree
-
 assets = Environment(app)
 assets.register(bundles)
-
 
 login_manager = LoginManager(app)
 csrf = CSRFProtect(app)
@@ -55,6 +55,7 @@ from instagram_web.blueprints.users.views import users_blueprint, User
 from instagram_web.blueprints.images.views import images_blueprint
 from instagram_web.blueprints.sessions.views import sessions_blueprint
 from instagram_web.blueprints.donations.views import donations_blueprint
+
 app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(images_blueprint, url_prefix="/images")
 app.register_blueprint(sessions_blueprint, url_prefix="/")

@@ -23,11 +23,11 @@
     <div class="form-group">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label for="users.update">Username:</label>
-        <input type="text" class="form-control mx-auto mb-3 p-0" name="user_name" value="{{ user.user_name }}">
+        <input type="text" class="form-control mx-auto mb-3 pl-1" name="user_name" value="{{ user.user_name }}">
         <label for="users.update">Email:</label>
-        <input type="email" class="form-control mb-3 p-0" name="email" value="{{ user.email }}">
+        <input type="email" class="form-control mb-3 pl-1" name="email" value="{{ user.email }}">
         <label for="users.update">Password:</label>
-        <input type="password" class="form-control mb-3" name="password">
+        <input type="password" class="form-control mb-3 pl-1" name="password">
         <label for="users.update">Upload Profile Image:</label>
         <input type="file" name="user_file">
     </div>

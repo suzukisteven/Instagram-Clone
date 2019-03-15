@@ -19,7 +19,7 @@ def upload_photo(id):
     if file:
         if file.filename == "":
             return "Please select a file."
-
+            
         if file and allowed_file(file.filename):
             file.filename = secure_filename(str(id) + file.filename + str(datetime.datetime.now()))
             output = upload_file_to_s3(file, app.config["S3_BUCKET"])
