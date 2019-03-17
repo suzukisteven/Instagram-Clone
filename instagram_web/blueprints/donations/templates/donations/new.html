@@ -10,16 +10,21 @@
 
 {% block content%}
     <h1 class="mt-3">Make a Donation</h1>
-    <p><em>We are legit - your information is safe with us. Trust me.</em></p>
+    <p><em>We are totally legit - your information is safe with us. Trust me.</em></p>
+
+    <div class="container mt-3 mb-5 d-flex justify-content-center">
+        <img src="{{ image.image_url }}" alt="User Image" style="width: auto; height: 500px;">
+    </div>
+
     <div class="wrapper">
         <div>
         
-            <form id="payment-form" method="post" action={{ url_for('donations.create', image_id=image_id) }}>
+            <form id="payment-form" method="post" action={{ url_for('donations.create', image_id=image.id) }}>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <section>
                 <label for="amount">
-                <span class="input-label">Amount:</span>
-                <div class="input-wrapper amount-wrapper">
+                <span class="input-label">Amount to Donate:</span>
+                <div class="input-wrapper amount-wrapper mt-2">
                     <input id="amount" class="form-control" name="amount" type="tel" min="1" placeholder="Amount" value="10">
                 </div>
                 </label>
@@ -36,6 +41,7 @@
         </div>
     </div>
 
+    <!-- Braintree Script -->
     <script src="https://js.braintreegateway.com/web/dropin/1.16.0/js/dropin.min.js"></script>
     <script>
         var form = document.querySelector('#payment-form');

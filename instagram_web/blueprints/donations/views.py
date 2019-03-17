@@ -2,8 +2,7 @@ import datetime
 import braintree
 import sendgrid
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from models.user import User
-from models.money import Money
+from models.money import Money, User, Image
 from flask_login import current_user, login_required
 from instagram_web.util.helpers import upload_file_to_s3, allowed_file, app, deliver_email
 from instagram_web import gateway, TRANSACTION_SUCCESS_STATUSES, generate_client_token, transact, find_transaction
@@ -15,8 +14,9 @@ donations_blueprint = Blueprint('donations',
 
 @donations_blueprint.route('/<image_id>/new', methods=['GET'])
 def new(image_id):
+    image = Image.get(id=image_id)
     client_token = generate_client_token()
-    return render_template('donations/new.html', image_id=image_id, client_token=client_token)
+    return render_template('donations/new.html', image=image, client_token=client_token)
 
 @donations_blueprint.route('/donations/<transaction_id>', methods=['GET'])
 def show(transaction_id):

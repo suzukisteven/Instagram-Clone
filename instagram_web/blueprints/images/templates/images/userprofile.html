@@ -59,17 +59,28 @@
   {% endif %}
   <div class="row">
       {% if not user.images %}
-      <div class="container text-center mt-5 pt-5 d-flex" style="height: 15em; align-items: stretch;">
-        <h3>You don't seem to have made any posts yet.</h3>
+      <div class="container justify-content-center mt-5 d-flex" style="height: 15em;">
+        <div class="my-auto">
+          <h3>You don't seem to have made any posts yet.</h3>
+        </div>
       </div>
       {% else %}
         {% for image in user.images %}
         <!-- Liren created a new div with the col-md-4 and margins. Use px-3 to handle the gaps on the y-axis -->
           <div class="px-3 col-md-4 mt-3 mb-3">
               <div class="card" style="height: 350px;">
+
                 <img class="my-auto mx-auto" src={{ image.image_url }} width="90%">
                 <!-- width="300px" -->
                 <a href="{{ url_for('donations.new', image_id=image.id) }}" class="btn btn-success btn-sm" style="position: absolute; bottom: 2.5%; right: 2.5%">Donate</a>
+                
+                {% if current_user.id == user.id %}
+                  <form action={{ url_for('images.delete', image_id=image.id) }} method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="btn btn-outline-danger btn-sm" type="submit" style="position: absolute; top: 2.5%; right: 2.5%"><i class="fas fa-times"></i></a>
+                  </form>
+                {% endif %}
+
               </div>
           </div>
         {% endfor %}

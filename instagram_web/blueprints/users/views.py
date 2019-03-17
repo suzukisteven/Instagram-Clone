@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from models.user import User
+from models.image import Image
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 from flask_login import current_user, login_user, logout_user, login_required
@@ -41,7 +42,8 @@ def create():
 @login_required
 def show(id):
     user = User.get_or_none(id=id)
-    return render_template('images/userprofile.html', user=user)
+    image = Image.get_or_none(id=id)
+    return render_template('images/userprofile.html', user=user, image=image)
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
@@ -73,6 +75,9 @@ def update(id):
                 file.filename = secure_filename(str(user.id) + file.filename + str(datetime.datetime.now()))
                 output = upload_file_to_s3(file, app.config["S3_BUCKET"])
                 user.profile_image_path = output
+            else:
+                flash("Please upload only .png, ,jpg, .jpeg or .gif format", "danger")
+                return render_template('home.html')
         
         if user.save():
             flash("Your Profile has been updated.", "success")

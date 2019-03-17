@@ -15,6 +15,16 @@ assets.register(bundles)
 login_manager = LoginManager(app)
 csrf = CSRFProtect(app)
 
+TRANSACTION_SUCCESS_STATUSES = [
+    braintree.Transaction.Status.Authorized,
+    braintree.Transaction.Status.Authorizing,
+    braintree.Transaction.Status.Settled,
+    braintree.Transaction.Status.SettlementConfirmed,
+    braintree.Transaction.Status.SettlementPending,
+    braintree.Transaction.Status.Settling,
+    braintree.Transaction.Status.SubmittedForSettlement
+]
+
 @login_manager.user_loader
 def load_user(id):
         return User.get_or_none(id=id)
@@ -31,16 +41,6 @@ gateway = braintree.BraintreeGateway(
         private_key=app.config.get('BT_PRIVATE_KEY')
     )
 )
-
-TRANSACTION_SUCCESS_STATUSES = [
-    braintree.Transaction.Status.Authorized,
-    braintree.Transaction.Status.Authorizing,
-    braintree.Transaction.Status.Settled,
-    braintree.Transaction.Status.SettlementConfirmed,
-    braintree.Transaction.Status.SettlementPending,
-    braintree.Transaction.Status.Settling,
-    braintree.Transaction.Status.SubmittedForSettlement
-]
 
 def generate_client_token():
     return gateway.client_token.generate()
@@ -71,6 +71,6 @@ def internal_server_error(e):
 
 @app.route("/")
 def home():
-    logo = app.config['S3_LOCATION'] + "33instagram-logo.png2019-03-14_041326.230982"
+    logo = app.config['S3_LOCATION'] + "33instagram-logo2019-03-14_041326.230982"
     return render_template('home.html')
 
