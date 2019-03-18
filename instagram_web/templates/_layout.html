@@ -50,10 +50,19 @@
               {% endif %}
               {% if current_user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for ('users.show', id=current_user.id) }}" style="font-size: 14px;">My Profile</a>
+                <a class="nav-link mr-3 disabled" href="#" style="font-size: 14px;">My Feed</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link mr-2" href="{{ url_for ('users.edit', id=current_user.id) }}" style="font-size: 14px;">Edit Profile</a>
+              <li class="nav-item dropdown mr-2">
+                <div class="d-flex">
+                  <span><img class="border rounded-circle my-auto mx-auto" width="35px;" src="{{current_user.profile_image_url}}" alt="User Profile Image"></span>
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14px;">
+                    {{current_user.first_name}}
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ url_for ('users.show', id=current_user.id) }}" style="font-size: 14px;">My Profile</a>
+                    <a class="dropdown-item" href="{{ url_for ('users.edit', id=current_user.id) }}" style="font-size: 14px;">Edit Profile</a>
+                  </div>
+                </div>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-light btn btn-danger btn-sm" href="{{ url_for ('sessions.logout') }}" style="font-size: 14px;">Logout</a>
@@ -88,7 +97,7 @@
       </div>
     </footer>
 
-    <script>setTimeout("$('.alert').alert('close')", 2000)</script>
+    <script>setTimeout("$('.alert').alert('close')", 3000)</script>
 
   </body>
 </html>

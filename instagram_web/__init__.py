@@ -1,5 +1,6 @@
 import os
 import braintree
+import config
 
 from app import app
 from flask import render_template
@@ -9,11 +10,15 @@ from .util.assets import bundles
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 
+from instagram_web.helpers.google_oauth import oauth
+
 assets = Environment(app)
 assets.register(bundles)
 
 login_manager = LoginManager(app)
 csrf = CSRFProtect(app)
+
+oauth.init_app(app)
 
 TRANSACTION_SUCCESS_STATUSES = [
     braintree.Transaction.Status.Authorized,
@@ -61,13 +66,13 @@ app.register_blueprint(images_blueprint, url_prefix="/images")
 app.register_blueprint(sessions_blueprint, url_prefix="/")
 app.register_blueprint(donations_blueprint, url_prefix="/donations")
 
-@app.errorhandler(500)
-def internal_server_error(e):
-    return render_template('500.html'), 500
-
 @app.errorhandler(404)
 def internal_server_error(e):
     return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 @app.route("/")
 def home():

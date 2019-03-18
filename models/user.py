@@ -13,6 +13,7 @@ class User(UserMixin, BaseModel):
     user_name = pw.CharField(unique=True, null=False, index=True)
     email = pw.CharField(unique=True, null=False)
     password = pw.CharField(unique=False, null=False)
+    description = pw.TextField(unique=False, null=True)
     profile_image_path = pw.CharField(unique=False, null=True)
     profile_privacy = pw.BooleanField(default=False)
 

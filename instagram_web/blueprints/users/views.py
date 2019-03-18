@@ -42,16 +42,17 @@ def create():
 @login_required
 def show(id):
     user = User.get_or_none(id=id)
-    image = Image.get_or_none(id=id)
-    return render_template('images/userprofile.html', user=user, image=image)
+    return render_template('images/userprofile.html', user=user, Image=Image)
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 @login_required
 def edit(id):
     user = User.get_by_id(id)
-    return render_template('edit.html', user=user)
-
+    if current_user == user:
+        return render_template('edit.html', user=user)
+    else:
+        return redirect(url_for('users.edit', id=current_user.id))
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
@@ -62,6 +63,9 @@ def update(id):
         if request.form.get('password'):
             user.password = request.form.get('password')
 
+        if request.form.get('description'):
+            user.description = request.form.get('description')
+
         if request.files.get('user_file'):
             if "user_file" not in request.files:
                 flash("No file found! Please try again.")
@@ -69,7 +73,7 @@ def update(id):
             file = request.files["user_file"]
 
             if file.filename == "":
-                return "Please select a file."
+                return "Please select a file with a valid filename."
             
             if file and allowed_file(file.filename):
                 file.filename = secure_filename(str(user.id) + file.filename + str(datetime.datetime.now()))

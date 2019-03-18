@@ -20,13 +20,13 @@ def upload_photo(id):
 
     if file:
         if file.filename == "":
-            return "Please select a file with a name."
+            return "Please select a file with a valid name."
             
         if file and allowed_file(file.filename):
-            file.filename = secure_filename(str(id) + file.filename + str(datetime.datetime.now()))
+            file.filename = secure_filename(str(id) + "_" + file.filename + "_" +str(datetime.datetime.now()))
             output = upload_file_to_s3(file, app.config["S3_BUCKET"])
             Image.create(image_path=output, user_id=id)
-            flash("Post created", "success")
+            flash("Your Post was created", "success")
             return redirect(url_for('users.show', id=id))
         else:
             flash("Only .jpg, .jpeg, .png, or .gif formats are accepted.", "danger")
@@ -49,9 +49,9 @@ def delete(image_id):
         flash("You are not authorized to do that." "danger")
         return redirect(url_for('sessions.new'))
 
-# HOW DO I PASS THE USERS ID INTO REDIRECT? import current_user from flask_login and set id=current_user.id
-# How can I stop other users from going to the users URL and deleting their posts? 1) Hide the delete button 2) not sure
-# How do I dependent destroy a post that has a foreign key attached to it with an entry? No idea man
+# Google OAuth not sure how to implement the final step to get it working. I think all the configs are done properly?
 
 # How did I manage to setup migrations so I only need to run a cli command migrate to run migrations?
 # There is no decorator @app.cli.command in app.py
+
+# Need further understanding on login_manager for user_loader and how it's linked to 'next'
