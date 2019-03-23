@@ -14,7 +14,7 @@ donations_blueprint = Blueprint('donations',
 
 @donations_blueprint.route('/<image_id>/new', methods=['GET'])
 def new(image_id):
-    image = Image.get(id=image_id)
+    image = Image.get_or_none(id=image_id)
     client_token = generate_client_token()
     return render_template('donations/new.html', image=image, client_token=client_token)
 

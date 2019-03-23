@@ -1,11 +1,14 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Page Not Found</title>
-</head>
-<body>
-    <img src="http://www.hover.com/wp-content/uploads/2015/08/404-page-error.png" alt="404 error">
-</body>
-</html>
+{% extends "_layout.html" %}
+{% block title %}
+    Page Not Found
+{% endblock %}
+
+{% block content %}
+    <div class="col-12 text-center">
+        <p class="text-center my-auto" style="font-size: 80px;"><strong><em>OOPS.</em></strong></p>
+        <p class="text-center my-auto" style="font-size: 30px;">The page you are looking for cannot be found.</p>
+        <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fmemegenerator.net%2Fimg%2Fimages%2F14004028%2Fpepe-the-frog-crying.jpg&f=1" alt="404 error">
+        </br>
+        <a class="btn btn-outline-success mt-3" href="{{ url_for('home') }}" style="position:absolute; top:33%; left:45%;">Back to Home</a>
+    </div>
+{% endblock%}

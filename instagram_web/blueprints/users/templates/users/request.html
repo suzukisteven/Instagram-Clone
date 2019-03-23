@@ -1,0 +1,48 @@
+{% extends "_layout.html" %}
+{% block title %}
+    Follower Requests
+{% endblock%}
+{% block content %}
+
+{% if errors %}
+{% for error in errors %}
+    <div class="alert alert-danger show w-75 d-flex mx-auto">
+        {{ error }}
+    </div>
+{% endfor %}
+{% endif %}
+    <div>
+        <h3 class="mt-3">New Follower Requests</h3>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 pt-3">
+        <!-- loop through list of all follower requests -->
+        <!-- display all the cards with: user profile image, username, 2 buttons (accept(g), reject(r)) -->
+            {% for following in followings %}
+                <div class="row mx-2 border border-muted rounded mb-3 p-0">
+                    <div class="col-3 rounded p-5 border-right border-muted"><img src="{{ following.fan.profile_image_url}}" width="100px" class="border border-muted rounded-circle">
+                        <span class="mt-5 mx-3">{{ following.fan.user_name }}</span>
+                    </div>
+                    <div class="col-7 rounded mb-3 p-5 my-auto text-center" height="100%">You have received a request to follow from <strong>{{ following.fan.user_name }}</strong></div>
+                    <div class="col-2 rounded mb-3" height="100%" style="line-height: 230px;">
+                        <div class="d-flex" height="100%">
+                            <form action="{{ url_for('users.accept_request', id=following.id) }}" method="POST" class="my-auto">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input class="btn btn-success btn-sm mr-3 my-auto" type="submit" value="Accept"/>
+                            </form>
+                            <form action="{{ url_for('users.decline_request', id=following.id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input class="btn btn-outline-danger btn-sm mx-auto" type="submit" value="Decline"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- What??? How does this work??? -->
+                {% else %}
+                    <div class="my-auto">
+                        <h5 class="mt-3 text-muted">You currently don't have any new requests.</h5>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -8,7 +8,10 @@ from flask import render_template
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
 from flask_wtf.csrf import CSRFProtect
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
+from models.user import User
+from models.image import Image
+from models.following import Following
 
 from instagram_web.helpers.google_oauth import oauth
 
@@ -76,6 +79,6 @@ def internal_server_error(e):
 
 @app.route("/")
 def home():
-    logo = app.config['S3_LOCATION'] + "33instagram-logo2019-03-14_041326.230982"
-    return render_template('home.html')
+    users = User.select().order_by(User.created_at.desc())
+    return render_template('home.html', users=users)
 

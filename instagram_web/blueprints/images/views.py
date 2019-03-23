@@ -4,6 +4,7 @@ from instagram_web.util.helpers import upload_file_to_s3, allowed_file, app
 from werkzeug.utils import secure_filename
 from models.user import User
 from models.image import Image
+from models.following import Following
 import datetime
 
 images_blueprint = Blueprint('images',
@@ -46,12 +47,5 @@ def delete(image_id):
             flash("Your post could not be deleted. Please try again.", "danger")
             return redirect(url_for('users.show', id=current_user.id))
     else:
-        flash("You are not authorized to do that." "danger")
+        flash("You are not authorized to do that.", "danger")
         return redirect(url_for('sessions.new'))
-
-# Google OAuth not sure how to implement the final step to get it working. I think all the configs are done properly?
-
-# How did I manage to setup migrations so I only need to run a cli command migrate to run migrations?
-# There is no decorator @app.cli.command in app.py
-
-# Need further understanding on login_manager for user_loader and how it's linked to 'next'

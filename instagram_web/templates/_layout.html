@@ -34,8 +34,8 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div>
-              <form class="form-inline">
-                  <input class="form-control mr-sm-2 rounded-0 text-center bg-light" style="width: 215px; height: 28px; font-size: 12px;" type="search" placeholder="Search" aria-label="Search">
+              <form class="form-inline" action="{{ url_for('users.search', query=query) }}" method="POST">
+                  <input class="form-control mr-sm-2 ml-5 rounded-0 text-center bg-light" style="width: 215px; height: 28px; font-size: 12px;" name="search" type="search" placeholder="Search" aria-label="Search">
                   <span class="text-secondary"><i class="fas fa-search"></i></span>
               </form>
             </div>
@@ -61,6 +61,10 @@
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{{ url_for ('users.show', id=current_user.id) }}" style="font-size: 14px;">My Profile</a>
                     <a class="dropdown-item" href="{{ url_for ('users.edit', id=current_user.id) }}" style="font-size: 14px;">Edit Profile</a>
+                    <!-- if there are follower requests -->
+                    <!-- <a class="dropdown-item" href="{{ url_for ('users.request', id=current_user.id) }}" style="font-size: 14px;">View Follower Requests<span class="border border-danger rounded text-center text-white bg-danger ml-2 px-2">{{ follow_requests|length }}</span></a> -->
+                    <!-- else -->
+                    <a class="dropdown-item" href="{{ url_for ('users.request', id=current_user.id) }}" style="font-size: 14px;">View Follower Requests</a>
                   </div>
                 </div>
               </li>
@@ -84,14 +88,14 @@
       {% endwith %}
 
     <!-- Liren's advice to keep footer at bottom regardless of content space -->
-    <!-- Add a min-height style where 100vh - (height of navbar + height of footer) -->
+    <!-- Add a min-height style that wraps block content where 100vh - (height of navbar + height of footer) -->
     <div class="container" style="min-height: 83vh;">
       {% block content %}
         <!-- All partial template content rendered here -->
       {% endblock %}
     </div>
 
-    <footer class="footer text-dark text-center" style="font-size: 14px;">
+    <footer class="footer text-dark text-center mt-3" style="font-size: 14px;">
       <div class="container">
         © 2019 INSTAGRAM
       </div>

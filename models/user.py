@@ -37,3 +37,15 @@ class User(UserMixin, BaseModel):
         else:
             # Otherwise, display a placeholder image instead.
             return app.config['S3_LOCATION'] + "20profile_placeholder.png2019-03-07_122049.466378"
+
+    @hybrid_property
+    # Users list of people followed
+    def list_of_idols_ids(self):
+        return [idol.idol_id for idol in self.idols if idol.is_approved]
+    
+    @hybrid_property
+    # Users list of followers
+    def list_of_fans_ids(self):
+        return [fan.fan_id for fan in self.fans if fan.is_approved]
+
+    

@@ -11,4 +11,3 @@ class Image(BaseModel):
     @hybrid_property
     def image_url(self):
         return app.config['S3_LOCATION'] + self.image_path
-        
